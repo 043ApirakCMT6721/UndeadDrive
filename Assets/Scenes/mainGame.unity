@@ -678,7 +678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8b958c5bd7ceb645b655f49a1825480, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
-  speed: 20
+  speed: 30
   boostMultiplier: 3
   turnSpeed: 120
 --- !u!54 &864504581
@@ -689,7 +689,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 864504578}
   serializedVersion: 5
-  m_Mass: 10
+  m_Mass: 20
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -747,8 +747,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 190919a812402554cbacd2cc8c744fc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarFlipGameOver
-  flipAngle: 60
-  flipTimeLimit: 5
 --- !u!1001 &922726364
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1220,7 +1218,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acb667f248dea9f44903035aa3bda1f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZombieAttack
-  speed: 50
 --- !u!54 &1615236687
 Rigidbody:
   m_ObjectHideFlags: 0
