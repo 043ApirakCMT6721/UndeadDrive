@@ -19,44 +19,46 @@ public class CarNitroSystem : MonoBehaviour
     public float boostMultiplier = 1.8f;
     public float minNitroToBoost = 30f;
 
-    [Header("Ground Check")]
-    public float groundCheckDistance = 1.2f;
-    public LayerMask groundLayer;
-    private bool isGrounded;
+    [Header("Camera FOV")]
+    public Camera playerCamera;
+    public float normalFOV = 60f;
+    public float boostFOV = 80f;
+    public float fovSpeed = 5f;
 
     [Header("UI")]
     public Slider nitroSlider;
+    public Image nitroFillImage;   // 🔥 ลาก Fill Image มาใส่
     public TextMeshProUGUI speedText;
+
+    [Header("Visual Effect")]
+    public float glowSpeed = 4f;
 
     private float currentSpeed = 0f;
     private Vector3 lastPosition;
     private float currentSpeedKmh;
-    private bool isBoosting = false;   // ✅ ตัวควบคุมบูสจริง
+    private bool isBoosting = false;
+    private float glowTimer = 0f;
 
     void Start()
     {
         lastPosition = transform.position;
+
+        if (playerCamera != null)
+            playerCamera.fieldOfView = normalFOV;
     }
 
     void Update()
     {
-        CheckGround();
-
         float moveInput = 0f;
 
-        // 🚗 เร่งได้เฉพาะตอนติดพื้น
-        if (isGrounded)
-        {
-            if (Input.GetKey(KeyCode.W))
-                moveInput = 1f;
+        if (Input.GetKey(KeyCode.W))
+            moveInput = 1f;
 
-            if (Input.GetKey(KeyCode.S))
-                moveInput = -1f;
+        if (Input.GetKey(KeyCode.S))
+            moveInput = -1f;
 
-            currentSpeed += moveInput * acceleration * Time.deltaTime;
-        }
+        currentSpeed += moveInput * acceleration * Time.deltaTime;
 
-        // 🧲 ลดความเร็วอัตโนมัติ
         if (moveInput == 0)
         {
             if (currentSpeed > 0)
@@ -70,19 +72,16 @@ public class CarNitroSystem : MonoBehaviour
         if (Mathf.Abs(currentSpeed) < 0.1f)
             currentSpeed = 0f;
 
-        // 🚀 เริ่ม Boost (ต้องมีขั้นต่ำ 30)
+        // 🚀 เริ่ม Boost
         if (Input.GetKeyDown(KeyCode.LeftShift)
             && nitro >= minNitroToBoost
-            && currentSpeed > 0
-            && isGrounded)
+            && currentSpeed > 0)
         {
             isBoosting = true;
         }
 
-        // หยุด Boost
         if (Input.GetKeyUp(KeyCode.LeftShift)
-            || nitro <= 0
-            || !isGrounded)
+            || nitro <= 0)
         {
             isBoosting = false;
         }
@@ -95,12 +94,10 @@ public class CarNitroSystem : MonoBehaviour
             nitro -= nitroUseRate * Time.deltaTime;
         }
 
-        // เคลื่อนที่
         transform.Translate(Vector3.forward * finalSpeed * Time.deltaTime);
 
         float distance = Vector3.Distance(transform.position, lastPosition);
 
-        // 🔢 คำนวณความเร็ว km/h
         if (Time.deltaTime > 0)
         {
             float speedMS = distance / Time.deltaTime;
@@ -110,36 +107,59 @@ public class CarNitroSystem : MonoBehaviour
         if (speedText != null)
             speedText.text = Mathf.RoundToInt(currentSpeedKmh) + " km/h";
 
-        // 🔋 เพิ่ม Nitro เฉพาะตอนติดพื้น และไม่บูส
-        if (!isBoosting && Mathf.Abs(currentSpeed) > 0.1f && isGrounded)
+        if (!isBoosting && Mathf.Abs(currentSpeed) > 0.1f)
         {
             nitro += distance * nitroGainMultiplier;
         }
 
         nitro = Mathf.Clamp(nitro, 0, maxNitro);
 
-        // ↩️ เลี้ยวได้เฉพาะตอนติดพื้น
-        if (Mathf.Abs(currentSpeed) > 0.1f && isGrounded)
+        if (Mathf.Abs(currentSpeed) > 0.1f)
         {
             float turn = Input.GetAxis("Horizontal");
             transform.Rotate(Vector3.up * turn * turnSpeed * Time.deltaTime);
         }
 
+        // 🎨 NITRO UI EFFECT
         if (nitroSlider != null)
-            nitroSlider.value = nitro / maxNitro;
+        {
+            float nitroPercent = nitro / maxNitro;
+            nitroSlider.value = nitroPercent;
+
+            if (nitroFillImage != null)
+            {
+                Color normalColor = Color.Lerp(Color.red, Color.cyan, nitroPercent);
+
+                if (isBoosting)
+                {
+                    glowTimer += Time.deltaTime * glowSpeed;
+                    float glow = 1f + Mathf.Sin(glowTimer) * 0.4f;
+                    nitroFillImage.color = normalColor * glow;
+                }
+                else if (nitro >= minNitroToBoost)
+                {
+                    glowTimer += Time.deltaTime * 2f;
+                    float pulse = 0.85f + Mathf.Sin(glowTimer) * 0.15f;
+                    nitroFillImage.color = normalColor * pulse;
+                }
+                else
+                {
+                    nitroFillImage.color = normalColor;
+                }
+            }
+        }
+
+        // 🎥 Smooth FOV
+        if (playerCamera != null)
+        {
+            float targetFOV = isBoosting ? boostFOV : normalFOV;
+            playerCamera.fieldOfView = Mathf.Lerp(
+                playerCamera.fieldOfView,
+                targetFOV,
+                Time.deltaTime * fovSpeed
+            );
+        }
 
         lastPosition = transform.position;
-    }
-
-    void CheckGround()
-    {
-        isGrounded = Physics.Raycast(
-            transform.position,
-            Vector3.down,
-            groundCheckDistance,
-            groundLayer
-        );
-
-        Debug.DrawRay(transform.position, Vector3.down * groundCheckDistance, Color.red);
     }
 }
