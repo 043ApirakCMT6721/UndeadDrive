@@ -734,7 +734,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.076683335, y: -0, z: -0, w: 0.99705553}
-  m_LocalPosition: {x: 0, y: 3.5, z: -9.46}
+  m_LocalPosition: {x: 0, y: 4.22, z: -14.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1103,8 +1103,8 @@ Transform:
   m_Children: []
   m_Father: {fileID: 922810038}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &463073820
-MeshCollider:
+--- !u!65 &463073820
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1121,10 +1121,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  serializedVersion: 3
+  m_Size: {x: 10, y: 2.220446e-16, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &483741805 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1533306946829406, guid: 1eb679c79a1a58e47ab5e9cc3c285835, type: 3}
@@ -1423,6 +1422,56 @@ Transform:
   - {fileID: 849634199}
   - {fileID: 1045506251}
   - {fileID: 1068951017}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &824990991
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 824990993}
+  - component: {fileID: 824990992}
+  m_Layer: 0
+  m_Name: Roadmanager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &824990992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824990991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d6671ecb11b4a34cb99ea4c62558971, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoadGenerator
+  roadPrefabs:
+  - {fileID: 1811526649344124105, guid: a823cff189bffac408492f8a0508e3f3, type: 3}
+  playerTransform: {fileID: 864504584}
+  numberOfRoads: 7
+  roadLength: 30
+  safeDistance: 20
+--- !u!4 &824990993
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824990991}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &849634192
@@ -2249,7 +2298,7 @@ Transform:
   m_GameObject: {fileID: 1183140325}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -21.3, y: 0.98, z: 5.442551}
+  m_LocalPosition: {x: -29.189999, y: 1, z: 5.442551}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -2488,7 +2537,7 @@ Transform:
   m_GameObject: {fileID: 1595882375}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -18.61, y: 0.98, z: 6.1225505}
+  m_LocalPosition: {x: -26.5, y: 1, z: 6.1225505}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -2616,64 +2665,6 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1688557560
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1688557562}
-  - component: {fileID: 1688557561}
-  m_Layer: 0
-  m_Name: RoadManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1688557561
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1688557560}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65072e68d0c4ba84daffe44521ff11a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RoadManager
-  roadStraight: {fileID: 1468420289329321389, guid: bc38fc93d6e2c5b4e94d07c15d3f5744, type: 3}
-  roadLeft: {fileID: 4865913152384766697, guid: 8dba7963a1327f94ca0e7b2dae56dc55, type: 3}
-  roadRight: {fileID: 4956758543159467571, guid: 19fbb866fcce1c24ea43851545068fe0, type: 3}
-  obstaclePrefabs:
-  - {fileID: 1059563906418585615, guid: 85102c64ba22fef4aaf9bac988e45610, type: 3}
-  - {fileID: 1059563906418585615, guid: 85102c64ba22fef4aaf9bac988e45610, type: 3}
-  - {fileID: 1059563906418585615, guid: 85102c64ba22fef4aaf9bac988e45610, type: 3}
-  - {fileID: 1059563906418585615, guid: 85102c64ba22fef4aaf9bac988e45610, type: 3}
-  - {fileID: 1059563906418585615, guid: 85102c64ba22fef4aaf9bac988e45610, type: 3}
-  obstacleSpawnChance: 90
-  player: {fileID: 864504584}
-  startRoadCount: 1
-  spawnDistance: 10
-  maxRoads: 4
---- !u!4 &1688557562
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1688557560}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.2, y: 0.96752, z: 16.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2931,7 +2922,7 @@ Transform:
   m_GameObject: {fileID: 1988623794}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -20.08, y: 2.33, z: 5.7708306}
+  m_LocalPosition: {x: -27.97, y: 2.35, z: 5.7708306}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -2966,5 +2957,5 @@ SceneRoots:
   - {fileID: 1890745634}
   - {fileID: 1680946232}
   - {fileID: 922810038}
-  - {fileID: 1688557562}
   - {fileID: 803228553}
+  - {fileID: 824990993}
