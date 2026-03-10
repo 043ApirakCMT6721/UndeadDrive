@@ -1,74 +1,173 @@
 using UnityEngine;
-using System.Collections.Generic; // ใช้ List เก็บถนน
+using System.Collections.Generic;
 
 public class RoadGenerator : MonoBehaviour
 {
-    [Header("การตั้งค่าถนน")]
+    [Header("Road Settings")]
     public GameObject[] roadPrefabs;
-    public Transform playerTransform; // ลากตัวผู้เล่นมาใส่
+    public Transform playerTransform;
 
     public int numberOfRoads = 10;
     public float roadLength = 10f;
-    public float safeDistance = 20f; // ระยะห่างก่อนลบถนน
 
     private Vector3 nextSpawnPoint;
-    private List<GameObject> activeRoads = new List<GameObject>(); // เก็บถนนที่สร้างแล้ว
+    private List<GameObject> activeRoads = new List<GameObject>();
+
+
+    [Header("Zombie Spawn")]
+    public GameObject[] zombiePrefabs;
+    public int maxZombies = 3;
+
+    public float roadHalfWidth = 4f;
+    public float sideOffset = 12f;
+
+    private List<GameObject> zombies = new List<GameObject>();
+
+
+    [Header("Obstacle Spawn")]
+    public GameObject[] obstaclePrefabs;
+    public int maxObstacles = 2;
+
+    private List<GameObject> obstacles = new List<GameObject>();
+
 
     void Start()
     {
         nextSpawnPoint = transform.position;
 
-        // สร้างถนนเริ่มต้น
         for (int i = 0; i < numberOfRoads; i++)
         {
             SpawnRoad();
         }
     }
 
+
     void Update()
     {
-        // 1. สร้างถนนเพิ่มเมื่อผู้เล่นใกล้ปลายถนน
         if (playerTransform.position.z > nextSpawnPoint.z - (numberOfRoads * roadLength))
         {
             SpawnRoad();
         }
 
-        // 2. ลบถนนเก่าที่อยู่ไกลผู้เล่น
-        if (activeRoads.Count > 0)
-        {
-            float distanceToOldRoad =
-                playerTransform.position.z - activeRoads[0].transform.position.z;
-
-            if (distanceToOldRoad > roadLength * 2)
-            {
-                Destroy(activeRoads[0]);
-                activeRoads.RemoveAt(0);
-            }
-        }
+        DeleteOldRoad();
+        DeleteFarObjects();
     }
 
-    public void SpawnRoad()
+
+    void SpawnRoad()
     {
         int randomIndex = Random.Range(0, roadPrefabs.Length);
-        GameObject roadToSpawn = roadPrefabs[randomIndex];
+        GameObject roadPrefab = roadPrefabs[randomIndex];
 
-        GameObject go = Instantiate(
-            roadToSpawn,
-            nextSpawnPoint,
-            Quaternion.identity
-        );
+        GameObject road = Instantiate(roadPrefab, nextSpawnPoint, Quaternion.identity);
 
-        activeRoads.Add(go);
+        activeRoads.Add(road);
+
+        SpawnZombies();
+        SpawnObstacles();
 
         nextSpawnPoint += new Vector3(0, 0, roadLength);
     }
 
-    private void DeleteOldRoad()
+
+    void SpawnZombies()
     {
-        if (activeRoads.Count > 0)
+        int zombieCount = Random.Range(0, maxZombies + 1);
+
+        for (int i = 0; i < zombieCount; i++)
+        {
+            Vector3 pos = GetSideSpawnPosition();
+
+            GameObject zombiePrefab =
+                zombiePrefabs[Random.Range(0, zombiePrefabs.Length)];
+
+            GameObject zombie = Instantiate(zombiePrefab, pos, Quaternion.identity);
+
+            zombie.transform.rotation =
+                Quaternion.Euler(0, Random.Range(0, 360), 0);
+
+            zombies.Add(zombie);
+        }
+    }
+
+
+    void SpawnObstacles()
+    {
+        int obstacleCount = Random.Range(0, maxObstacles + 1);
+
+        for (int i = 0; i < obstacleCount; i++)
+        {
+            float x = Random.Range(-roadHalfWidth, roadHalfWidth);
+            float z = Random.Range(-roadLength / 2, roadLength / 2);
+
+            Vector3 pos = nextSpawnPoint + new Vector3(x, 0, z);
+
+            GameObject obstaclePrefab =
+                obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)];
+
+            GameObject obstacle = Instantiate(obstaclePrefab, pos, Quaternion.identity);
+
+            obstacle.transform.rotation =
+                Quaternion.Euler(0, Random.Range(0, 360), 0);
+
+            obstacles.Add(obstacle);
+        }
+    }
+
+
+    Vector3 GetSideSpawnPosition()
+    {
+        float x;
+
+        if (Random.value > 0.5f)
+            x = Random.Range(-sideOffset, -roadHalfWidth);
+        else
+            x = Random.Range(roadHalfWidth, sideOffset);
+
+        float z = Random.Range(-roadLength / 2, roadLength / 2);
+
+        return nextSpawnPoint + new Vector3(x, 0, z);
+    }
+
+
+    void DeleteOldRoad()
+    {
+        if (activeRoads.Count == 0) return;
+
+        float distance = playerTransform.position.z - activeRoads[0].transform.position.z;
+
+        if (distance > roadLength * 2)
         {
             Destroy(activeRoads[0]);
             activeRoads.RemoveAt(0);
+        }
+    }
+
+
+    void DeleteFarObjects()
+    {
+        DeleteList(zombies);
+        DeleteList(obstacles);
+    }
+
+
+    void DeleteList(List<GameObject> list)
+    {
+        for (int i = list.Count - 1; i >= 0; i--)
+        {
+            if (list[i] == null)
+            {
+                list.RemoveAt(i);
+                continue;
+            }
+
+            float distance = playerTransform.position.z - list[i].transform.position.z;
+
+            if (distance > 40f)
+            {
+                Destroy(list[i]);
+                list.RemoveAt(i);
+            }
         }
     }
 }
