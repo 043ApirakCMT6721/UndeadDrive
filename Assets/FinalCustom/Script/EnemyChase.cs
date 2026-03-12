@@ -1,27 +1,21 @@
 using UnityEngine;
 
-public class EnemyChase : MonoBehaviour
+public class ZombieAI : MonoBehaviour
 {
     public Transform player;
-    public float moveSpeed = 5f;
-    public float stopDistance = 2f;
+    public float speed = 6f;
+
+    void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+    }
 
     void Update()
     {
-        if (player == null) return;
-
-        float distance = Vector3.Distance(transform.position, player.position);
-
-        if (distance > stopDistance)
-        {
-            // หันหน้าเข้าหาผู้เล่น
-            Vector3 direction = (player.position - transform.position).normalized;
-            direction.y = 0;
-
-            transform.rotation = Quaternion.LookRotation(direction);
-
-            // เดินเข้าไปหา
-            transform.position += direction * moveSpeed * Time.deltaTime;
-        }
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            player.position,
+            speed * Time.deltaTime
+        );
     }
 }

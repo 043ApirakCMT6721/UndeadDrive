@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: 7374583315763136096}
   - component: {fileID: 3474923287244746336}
   m_Layer: 0
-  m_Name: Capsule (1)
-  m_TagString: Untagged
+  m_Name: Zombie
+  m_TagString: Zombie
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -154,5 +154,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyChase
   player: {fileID: 0}
-  moveSpeed: 5
-  stopDistance: 2
+  speed: 3
