@@ -11,8 +11,6 @@ public class CarHealth : MonoBehaviour
     public GameObject bloodEffect;
     public GameObject explosionEffect;
 
-    public CarSpeed carSpeed;
-
     Rigidbody rb;
     bool isDestroyed = false;
 
