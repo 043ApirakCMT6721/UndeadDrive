@@ -32,7 +32,7 @@ public class CarHealth : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Zombie"))
         {
-            float speed = carSpeed.GetSpeed();
+            float speed = carNitroSystem.GetSpeed();
 
             if (bloodEffect != null)
             {

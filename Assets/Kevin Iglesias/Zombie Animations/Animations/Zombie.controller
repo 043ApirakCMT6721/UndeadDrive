@@ -6,13 +6,13 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Zombie@Walk
+  m_Name: Zombie
   serializedVersion: 5
   m_AnimatorParameters: []
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
-    m_StateMachine: {fileID: 5176945701214904163}
+    m_StateMachine: {fileID: 1286448557279973873}
     m_Mask: {fileID: 0}
     m_Motions: []
     m_Behaviours: []
@@ -22,7 +22,7 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
---- !u!1107 &5176945701214904163
+--- !u!1107 &1286448557279973873
 AnimatorStateMachine:
   serializedVersion: 6
   m_ObjectHideFlags: 1
@@ -32,19 +32,19 @@ AnimatorStateMachine:
   m_Name: Base Layer
   m_ChildStates:
   - serializedVersion: 1
-    m_State: {fileID: 5499793422058781698}
-    m_Position: {x: 400, y: 60, z: 0}
+    m_State: {fileID: 7077220481550457987}
+    m_Position: {x: 200, y: 0, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
-  m_EntryPosition: {x: 50, y: 130, z: 0}
+  m_EntryPosition: {x: 50, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: 5499793422058781698}
---- !u!1102 &5499793422058781698
+  m_DefaultState: {fileID: 7077220481550457987}
+--- !u!1102 &7077220481550457987
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
@@ -53,7 +53,7 @@ AnimatorState:
   m_PrefabAsset: {fileID: 0}
   m_Name: Zombie@Walk01
   m_Speed: 1
-  m_CycleOffset: 1
+  m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}

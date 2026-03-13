@@ -38,6 +38,10 @@ public class CarNitroSystem : MonoBehaviour
     private float currentSpeedKmh;
     private bool isBoosting = false;
     private float glowTimer = 0f;
+    public float GetSpeed()
+    {
+        return currentSpeedKmh;
+    }
 
     void Start()
     {

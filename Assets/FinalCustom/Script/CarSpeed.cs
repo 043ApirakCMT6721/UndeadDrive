@@ -4,19 +4,28 @@ public class CarSpeed : MonoBehaviour
 {
     public Rigidbody rb;
 
-    public float speedKmh;
+    public float speed;
+
+    public float safeSpeed = 1.5f; // ความเร็วขั้นต่ำ ถ้าต่ำกว่านี้ถือว่าหยุด
 
     void Update()
     {
         if (rb != null)
         {
-            // แปลงความเร็วจาก m/s เป็น km/h
-            speedKmh = rb.linearVelocity.magnitude * 3.6f;
+            // ใช้ความเร็วจาก Rigidbody ตรงๆ (m/s)
+            speed = rb.linearVelocity.magnitude;
+            Debug.Log(GetSpeed());
         }
     }
 
     public float GetSpeed()
     {
-        return speedKmh;
+        return speed * 3.6f;
+    }
+
+    public bool CanTakeDamage()
+    {
+        // ถ้ารถช้าหรือหยุด จะโดนดาเมจได้
+        return speed < safeSpeed;
     }
 }
