@@ -27,17 +27,25 @@ public class CarNitroSystem : MonoBehaviour
 
     [Header("UI")]
     public Slider nitroSlider;
-    public Image nitroFillImage;   // 🔥 ลาก Fill Image มาใส่
+    public Image nitroFillImage;
     public TextMeshProUGUI speedText;
+    public TextMeshProUGUI distanceText;   // UI ระยะทาง
 
     [Header("Visual Effect")]
     public float glowSpeed = 4f;
+
+    [Header("Collision Settings")]
+    public float bounceBackForce = 8f;
+    public float zombieSlowMultiplier = 0.6f;
 
     private float currentSpeed = 0f;
     private Vector3 lastPosition;
     private float currentSpeedKmh;
     private bool isBoosting = false;
     private float glowTimer = 0f;
+
+    private float distanceTravelled = 0f; // ระยะทางรวม
+
     public float GetSpeed()
     {
         return currentSpeedKmh;
@@ -76,7 +84,7 @@ public class CarNitroSystem : MonoBehaviour
         if (Mathf.Abs(currentSpeed) < 0.1f)
             currentSpeed = 0f;
 
-        // 🚀 เริ่ม Boost
+        // Boost
         if (Input.GetKeyDown(KeyCode.LeftShift)
             && nitro >= minNitroToBoost
             && currentSpeed > 0)
@@ -84,8 +92,7 @@ public class CarNitroSystem : MonoBehaviour
             isBoosting = true;
         }
 
-        if (Input.GetKeyUp(KeyCode.LeftShift)
-            || nitro <= 0)
+        if (Input.GetKeyUp(KeyCode.LeftShift) || nitro <= 0)
         {
             isBoosting = false;
         }
@@ -102,12 +109,21 @@ public class CarNitroSystem : MonoBehaviour
 
         float distance = Vector3.Distance(transform.position, lastPosition);
 
+        // คำนวณความเร็ว
         if (Time.deltaTime > 0)
         {
             float speedMS = distance / Time.deltaTime;
             currentSpeedKmh = speedMS * 3.6f;
         }
 
+        // เพิ่มระยะทาง
+        distanceTravelled += distance;
+
+        // แสดงระยะทาง UI
+        if (distanceText != null)
+            distanceText.text = "Distance : " + Mathf.RoundToInt(distanceTravelled) + " m";
+
+        // แสดงความเร็ว
         if (speedText != null)
             speedText.text = Mathf.RoundToInt(currentSpeedKmh) + " km/h";
 
@@ -124,7 +140,7 @@ public class CarNitroSystem : MonoBehaviour
             transform.Rotate(Vector3.up * turn * turnSpeed * Time.deltaTime);
         }
 
-        // 🎨 NITRO UI EFFECT
+        // เอฟเฟกต์ Nitro UI
         if (nitroSlider != null)
         {
             float nitroPercent = nitro / maxNitro;
@@ -153,10 +169,11 @@ public class CarNitroSystem : MonoBehaviour
             }
         }
 
-        // 🎥 Smooth FOV
+        // กล้อง FOV ตอน Boost
         if (playerCamera != null)
         {
             float targetFOV = isBoosting ? boostFOV : normalFOV;
+
             playerCamera.fieldOfView = Mathf.Lerp(
                 playerCamera.fieldOfView,
                 targetFOV,
@@ -165,5 +182,19 @@ public class CarNitroSystem : MonoBehaviour
         }
 
         lastPosition = transform.position;
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            isBoosting = false;
+            currentSpeed = -bounceBackForce;
+        }
+
+        if (collision.gameObject.CompareTag("Zombie"))
+        {
+            currentSpeed *= zombieSlowMultiplier;
+        }
     }
 }

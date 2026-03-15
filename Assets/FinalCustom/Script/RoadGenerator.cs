@@ -26,7 +26,9 @@ public class RoadGenerator : MonoBehaviour
 
     [Header("Obstacle Spawn")]
     public GameObject[] obstaclePrefabs;
-    public int maxObstacles = 2;
+    public int maxObstacles = 4;
+
+    public float obstacleCheckRadius = 2.5f;
 
     private List<GameObject> obstacles = new List<GameObject>();
 
@@ -34,6 +36,8 @@ public class RoadGenerator : MonoBehaviour
     void Start()
     {
         nextSpawnPoint = transform.position;
+
+        SetupFog();
 
         for (int i = 0; i < numberOfRoads; i++)
         {
@@ -93,24 +97,50 @@ public class RoadGenerator : MonoBehaviour
 
     void SpawnObstacles()
     {
-        int obstacleCount = Random.Range(0, maxObstacles + 1);
+        int obstacleCount = Random.Range(1, maxObstacles + 1);
+
+        int attempts = 0;
 
         for (int i = 0; i < obstacleCount; i++)
         {
-            float x = Random.Range(-roadHalfWidth, roadHalfWidth);
-            float z = Random.Range(-roadLength / 2, roadLength / 2);
+            Vector3 pos;
+            bool validPosition = false;
 
-            Vector3 pos = nextSpawnPoint + new Vector3(x, 0, z);
+            while (!validPosition && attempts < 20)
+            {
+                attempts++;
 
-            GameObject obstaclePrefab =
-                obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)];
+                float x;
 
-            GameObject obstacle = Instantiate(obstaclePrefab, pos, Quaternion.identity);
+                int zone = Random.Range(0, 3);
 
-            obstacle.transform.rotation =
-                Quaternion.Euler(0, Random.Range(0, 360), 0);
+                if (zone == 0)
+                    x = Random.Range(-sideOffset, -roadHalfWidth);
+                else if (zone == 1)
+                    x = Random.Range(-roadHalfWidth, roadHalfWidth);
+                else
+                    x = Random.Range(roadHalfWidth, sideOffset);
 
-            obstacles.Add(obstacle);
+                float z = Random.Range(-roadLength / 2, roadLength / 2);
+
+                pos = nextSpawnPoint + new Vector3(x, 0, z);
+
+                if (!Physics.CheckSphere(pos, obstacleCheckRadius))
+                {
+                    GameObject obstaclePrefab =
+                        obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)];
+
+                    GameObject obstacle =
+                        Instantiate(obstaclePrefab, pos, Quaternion.identity);
+
+                    obstacle.transform.rotation =
+                        Quaternion.Euler(0, Random.Range(0, 360), 0);
+
+                    obstacles.Add(obstacle);
+
+                    validPosition = true;
+                }
+            }
         }
     }
 
@@ -134,7 +164,8 @@ public class RoadGenerator : MonoBehaviour
     {
         if (activeRoads.Count == 0) return;
 
-        float distance = playerTransform.position.z - activeRoads[0].transform.position.z;
+        float distance =
+            playerTransform.position.z - activeRoads[0].transform.position.z;
 
         if (distance > roadLength * 2)
         {
@@ -161,13 +192,25 @@ public class RoadGenerator : MonoBehaviour
                 continue;
             }
 
-            float distance = playerTransform.position.z - list[i].transform.position.z;
+            float distance =
+                playerTransform.position.z - list[i].transform.position.z;
 
-            if (distance > 40f)
+            if (distance > 50f)
             {
                 Destroy(list[i]);
                 list.RemoveAt(i);
             }
         }
+    }
+
+
+    void SetupFog()
+    {
+        RenderSettings.fog = true;
+        RenderSettings.fogColor = Color.gray;
+
+        RenderSettings.fogMode = FogMode.Linear;
+        RenderSettings.fogStartDistance = 30f;
+        RenderSettings.fogEndDistance = 120f;
     }
 }
