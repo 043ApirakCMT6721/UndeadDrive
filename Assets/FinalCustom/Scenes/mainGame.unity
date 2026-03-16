@@ -481,6 +481,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1106370805925670, guid: 1eb679c79a1a58e47ab5e9cc3c285835, type: 3}
       insertIndex: -1
       addedObject: {fileID: 864504600}
+    - targetCorrespondingSourceObject: {fileID: 1106370805925670, guid: 1eb679c79a1a58e47ab5e9cc3c285835, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 864504603}
     - targetCorrespondingSourceObject: {fileID: 1533306946829406, guid: 1eb679c79a1a58e47ab5e9cc3c285835, type: 3}
       insertIndex: -1
       addedObject: {fileID: 483741811}
@@ -2844,6 +2847,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::smoke
   speed: 5
+--- !u!114 &864504603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 864504578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8625d64f272de674b83a1c844c544a2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Car
+  speed: 3
+  smoke: {fileID: 1922456077}
 --- !u!1 &872183023
 GameObject:
   m_ObjectHideFlags: 0
@@ -5035,7 +5052,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 15
+      scalar: 7
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -9513,8 +9530,8 @@ Transform:
   m_GameObject: {fileID: 1922456075}
   serializedVersion: 2
   m_LocalRotation: {x: -0.9998883, y: -0, z: -0, w: -0.014946884}
-  m_LocalPosition: {x: 0.465, y: -0.442, z: -2.098}
-  m_LocalScale: {x: 0.099999994, y: 0.099999994, z: 0.25}
+  m_LocalPosition: {x: 0.465, y: -0.538, z: -2.095}
+  m_LocalScale: {x: 0.099999994, y: 0.099999994, z: 0.34}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 864504584}
