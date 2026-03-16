@@ -5,13 +5,16 @@ public class CarHealth : MonoBehaviour
     public float maxHealth = 100f;
     public float currentHealth;
 
+    [Header("Damage Settings")]
     public float minSafeSpeed = 20f;
     public float damage = 20f;
 
+    [Header("Effects")]
     public GameObject bloodEffect;
     public GameObject explosionEffect;
 
-    public CarSpeed carSpeed;
+    [Header("UI")]
+    public GameUIManager gameUIManager;
 
     Rigidbody rb;
     bool isDestroyed = false;
@@ -34,6 +37,7 @@ public class CarHealth : MonoBehaviour
         {
             float speed = carNitroSystem.GetSpeed();
 
+            // เอฟเฟกเลือด
             if (bloodEffect != null)
             {
                 Instantiate(bloodEffect, collision.contacts[0].point, Quaternion.identity);
@@ -68,6 +72,7 @@ public class CarHealth : MonoBehaviour
     {
         isDestroyed = true;
 
+        // เอฟเฟกระเบิด
         if (explosionEffect != null)
         {
             Instantiate(explosionEffect, transform.position, Quaternion.identity);
@@ -78,10 +83,16 @@ public class CarHealth : MonoBehaviour
         rb.angularVelocity = Vector3.zero;
         rb.isKinematic = true;
 
-        // ปิดระบบไนโตร / ควบคุมรถ
+        // ปิดระบบควบคุมรถ
         if (carNitroSystem != null)
         {
             carNitroSystem.enabled = false;
+        }
+
+        // เรียก Game Over UI
+        if (gameUIManager != null)
+        {
+            gameUIManager.GameOver();
         }
 
         Debug.Log("GAME OVER");
