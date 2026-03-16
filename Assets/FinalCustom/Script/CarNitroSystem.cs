@@ -54,6 +54,9 @@ public class CarNitroSystem : MonoBehaviour
         lastPosition = transform.position;
         if (playerCamera != null)
             playerCamera.fieldOfView = normalFOV;
+        // ล็อก Slider ไม่ให้ลากได้
+        if (nitroSlider != null)
+            nitroSlider.interactable = false;
     }
     void Update()
     {
