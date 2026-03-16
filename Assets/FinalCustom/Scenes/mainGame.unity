@@ -527,7 +527,7 @@ MonoBehaviour:
   startPanel: {fileID: 1259635121}
   gameOverPanel: {fileID: 511837238}
   pausePanel: {fileID: 1137592559}
-  gameOverSound: {fileID: 0}
+  gameOverSound: {fileID: 191155737}
 --- !u!4 &191155736
 Transform:
   m_ObjectHideFlags: 0
@@ -554,8 +554,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_Resource: {fileID: 8300000, guid: 24f72783de92d464c982e0bfe22a8898, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
