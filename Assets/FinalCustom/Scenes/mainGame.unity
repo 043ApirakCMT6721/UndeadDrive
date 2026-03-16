@@ -1849,7 +1849,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 752445058349613842, guid: 0351eb5b5bd666f49a768e2d46ae38f7, type: 3}
       propertyPath: InitialModule.startSpeed.scalar
-      value: 50
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 752445058349613842, guid: 0351eb5b5bd666f49a768e2d46ae38f7, type: 3}
       propertyPath: InitialModule.startSize.minScalar
@@ -1861,7 +1861,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 752445058349613842, guid: 0351eb5b5bd666f49a768e2d46ae38f7, type: 3}
       propertyPath: InitialModule.startSpeed.minScalar
-      value: 30
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4578505989660675316, guid: 0351eb5b5bd666f49a768e2d46ae38f7, type: 3}
       propertyPath: m_LocalScale.x
@@ -1917,7 +1917,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7470570886818948052, guid: 0351eb5b5bd666f49a768e2d46ae38f7, type: 3}
       propertyPath: m_Name
-      value: Boost Effect
+      value: boost
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2778,7 +2778,7 @@ MonoBehaviour:
   speedText: {fileID: 771619995}
   distanceText: {fileID: 0}
   glowSpeed: 10
-  boostEffect: {fileID: 2027571975}
+  boostEffect: {fileID: 0}
   bounceBackForce: 8
   zombieSlowMultiplier: 0.6
 --- !u!65 &864504594
@@ -9717,11 +9717,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2020415451}
   m_CullTransparentMesh: 1
---- !u!198 &2027571975 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 752445058349613842, guid: 0351eb5b5bd666f49a768e2d46ae38f7, type: 3}
-  m_PrefabInstance: {fileID: 555757507}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2049922935
 GameObject:
   m_ObjectHideFlags: 0
