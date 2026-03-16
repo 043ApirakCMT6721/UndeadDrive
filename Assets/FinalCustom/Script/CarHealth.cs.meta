@@ -1,2 +1,14 @@
 fileFormatVersion: 2
 guid: 6d97c19364911e24e8867719e3803a63
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - bloodEffect: {instanceID: 0}
+  - explosionEffect: {instanceID: 0}
+  - gameUIManager: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
