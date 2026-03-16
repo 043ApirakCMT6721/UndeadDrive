@@ -34,6 +34,9 @@ public class CarNitroSystem : MonoBehaviour
     [Header("Visual Effect")]
     public float glowSpeed = 4f;
 
+    [Header("Boost Effect")]
+    public ParticleSystem boostEffect;
+
     [Header("Collision Settings")]
     public float bounceBackForce = 8f;
     public float zombieSlowMultiplier = 0.6f;
@@ -85,9 +88,9 @@ public class CarNitroSystem : MonoBehaviour
             currentSpeed = 0f;
 
         // Boost
-        if (Input.GetKeyDown(KeyCode.LeftShift)
-            && nitro >= minNitroToBoost
-            && currentSpeed > 0)
+        if (Input.GetKey(KeyCode.LeftShift)
+         && nitro >= minNitroToBoost
+          && currentSpeed > 0)
         {
             isBoosting = true;
         }
@@ -182,6 +185,20 @@ public class CarNitroSystem : MonoBehaviour
         }
 
         lastPosition = transform.position;
+        // BOOST PARTICLE EFFECT
+        if (boostEffect != null)
+        {
+            if (isBoosting)
+            {
+                if (!boostEffect.isPlaying)
+                    boostEffect.Play();
+            }
+            else
+            {
+                if (boostEffect.isPlaying)
+                    boostEffect.Stop();
+            }
+        }
     }
 
     void OnCollisionEnter(Collision collision)
