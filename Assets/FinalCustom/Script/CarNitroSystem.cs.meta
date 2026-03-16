@@ -1,2 +1,17 @@
 fileFormatVersion: 2
 guid: 1b8fcb991126ffe47a9d29659acd344c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - playerCamera: {instanceID: 0}
+  - nitroSlider: {instanceID: 0}
+  - nitroFillImage: {instanceID: 0}
+  - speedText: {instanceID: 0}
+  - distanceText: {instanceID: 0}
+  - boostEffect: {fileID: 752445058349613842, guid: 0351eb5b5bd666f49a768e2d46ae38f7, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
