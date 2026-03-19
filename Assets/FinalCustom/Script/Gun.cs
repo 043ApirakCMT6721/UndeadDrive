@@ -56,7 +56,7 @@ public class Gun : MonoBehaviour
             foreach (Transform point in firePoints)
             {
                 GameObject bullet = Instantiate(bulletPrefab, point.position, point.rotation);
-
+                /*
                 Rigidbody rb = bullet.GetComponent<Rigidbody>();
 
                 if (rb != null)
@@ -65,6 +65,7 @@ public class Gun : MonoBehaviour
                 }
 
                 Destroy(bullet, 5f);
+                */
             }
 
         RaycastHit hit;

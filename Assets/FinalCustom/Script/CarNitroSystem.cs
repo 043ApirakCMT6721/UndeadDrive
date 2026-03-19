@@ -78,8 +78,8 @@ public class CarNitroSystem : MonoBehaviour
             currentSpeed = 0f;
         // BOOST
         if (Input.GetKey(KeyCode.LeftShift)
- && nitro >= minNitroToBoost
- && currentSpeed > 0)
+            && nitro >= minNitroToBoost
+            && currentSpeed > 0)
         {
             isBoosting = true;
         }
@@ -169,6 +169,7 @@ public class CarNitroSystem : MonoBehaviour
                     turboSound.Stop();
             }
         }
+          nitroSlider.value = nitro / maxNitro;
     }
     void OnCollisionEnter(Collision collision)
     {
