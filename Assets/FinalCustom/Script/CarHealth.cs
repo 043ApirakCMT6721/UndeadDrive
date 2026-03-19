@@ -20,6 +20,7 @@ public class CarHealth : MonoBehaviour
     bool isDestroyed = false;
 
     CarNitroSystem carNitroSystem;
+    CarDistance carDistance;
 
     void Start()
     {
@@ -27,6 +28,9 @@ public class CarHealth : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
         carNitroSystem = GetComponent<CarNitroSystem>();
+
+        // หา CarDistance ใน Scene
+        carDistance = FindObjectOfType<CarDistance>();
     }
 
     void OnCollisionEnter(Collision collision)
@@ -43,12 +47,12 @@ public class CarHealth : MonoBehaviour
                 Instantiate(bloodEffect, collision.contacts[0].point, Quaternion.identity);
             }
 
-            // รถช้า → รถเสียเลือด
+            // 🚗 รถช้า → รถเสียเลือด
             if (speed < minSafeSpeed)
             {
                 TakeDamage(damage);
             }
-            // รถเร็ว → ซอมบี้ตาย
+            // 💀 รถเร็ว → ซอมบี้ตาย
             else
             {
                 Destroy(collision.gameObject);
@@ -72,24 +76,37 @@ public class CarHealth : MonoBehaviour
     {
         isDestroyed = true;
 
-        // เอฟเฟกระเบิด
+        // 💥 เอฟเฟกระเบิด
         if (explosionEffect != null)
         {
             Instantiate(explosionEffect, transform.position, Quaternion.identity);
         }
 
-        // หยุดรถ
+        // 🛑 หยุดรถ
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         rb.isKinematic = true;
 
-        // ปิดระบบควบคุมรถ
+        // ❌ ปิดระบบควบคุมรถ
         if (carNitroSystem != null)
         {
             carNitroSystem.enabled = false;
         }
 
-        // เรียก Game Over UI
+        // 🏆💾 เซฟระยะทาง + High Score
+        if (carDistance != null)
+        {
+            carDistance.SaveHighScore();   // เซฟสถิติ
+            carDistance.enabled = false;   // หยุดนับระยะ
+        }
+
+        // 📊 แสดงระยะตอน Game Over
+        if (gameUIManager != null && carDistance != null)
+        {
+            gameUIManager.ShowDistance(carDistance.GetDistance());
+        }
+
+        // 🧾 แสดง Game Over UI
         if (gameUIManager != null)
         {
             gameUIManager.GameOver();
