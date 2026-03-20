@@ -102,7 +102,7 @@ public class Gun : MonoBehaviour
             }
         }
 
-        // ระบบ Raycast ไว้จัดการ Zombie
+        
         RaycastHit hit;
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range))
         {
