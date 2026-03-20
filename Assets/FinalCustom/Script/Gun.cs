@@ -1,19 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
-using TMPro; // 👈 เพิ่มตัวนี้เพื่อใช้ TextMeshPro
+using TMPro; // สำหรับ UI กระสุน
 
 public class Gun : MonoBehaviour
 {
     public Camera cam;
     public float range = 100f;
     public float fireRate = 25f;
-    public int maxAmmo = 60; // 👈 เปลี่ยนเป็น 60 ตามที่ต้องการ
+    public int maxAmmo = 60; // ปรับเป็น 60 ตามที่ต้องการ
     public int currentAmmo;
     public ParticleSystem muzzleFlash;
     public AudioSource gunSound;
+    public AudioClip reloadSound; // 🔊 ช่องใส่เสียงรีโหลด (เพิ่มใหม่)
 
     [Header("UI Settings")]
-    public TextMeshProUGUI ammoText; // 👈 ลาก Object AmmoText มาใส่ในช่องนี้ใน Inspector
+    public TextMeshProUGUI ammoText; // 👈 ลาก Text ในหน้า Inspector มาใส่ช่องนี้
 
     [Header("Bullet Settings")]
     public GameObject bulletPrefab;
@@ -27,7 +28,7 @@ public class Gun : MonoBehaviour
     void Start()
     {
         currentAmmo = maxAmmo;
-        UpdateAmmoUI(); // 👈 อัปเดต UI ตอนเริ่มเกม
+        UpdateAmmoUI(); // อัปเดตเลขกระสุนตอนเริ่มเกม
 
         if (gunSound != null)
         {
@@ -41,13 +42,14 @@ public class Gun : MonoBehaviour
         if (isReloading)
             return;
 
-        
+        // รีโหลดเมื่อกด R เท่านั้น (ห้ามรีโหลดเอง)
         if (Input.GetKeyDown(KeyCode.R))
         {
             StartCoroutine(Reload());
             return;
         }
 
+        // ยิงได้ต่อเมื่อมีกระสุน (currentAmmo > 0)
         if (Input.GetMouseButton(0) && Time.time >= nextTimeToFire && currentAmmo > 0)
         {
             nextTimeToFire = Time.time + 1f / fireRate;
@@ -58,12 +60,12 @@ public class Gun : MonoBehaviour
     void Shoot()
     {
         currentAmmo--;
-        UpdateAmmoUI(); // 👈 อัปเดต UI ทุกครั้งที่ยิง
+        UpdateAmmoUI(); // อัปเดตเลขทุกครั้งที่ยิง
 
         if (muzzleFlash != null)
             muzzleFlash.Play();
 
-        // ระบบเสียง
+        // ระบบเสียงปืน (แบบสุ่ม Pitch ของเพื่อน)
         if (gunSound != null && gunSound.clip != null)
         {
             float randomPitch = Random.Range(0.9f, 1.1f);
@@ -77,7 +79,7 @@ public class Gun : MonoBehaviour
             Destroy(tempAudio, gunSound.clip.length);
         }
 
-        // ระบบยิงกระสุน
+        // ระบบยิงกระสุนโมเดล (ของคุณ)
         if (bulletPrefab != null && firePoints != null)
         {
             foreach (Transform point in firePoints)
@@ -90,15 +92,17 @@ public class Gun : MonoBehaviour
                     rb.linearVelocity = point.forward * bulletForce + (carRb != null ? carRb.linearVelocity : Vector3.zero);
                 }
 
-                // Ignore Collision
+                // ป้องกันกระสุนชนรถ
                 Collider bulletCol = bullet.GetComponent<Collider>();
                 Collider[] carCols = GetComponentsInParent<Collider>();
                 foreach (Collider col in carCols)
+                {
                     if (bulletCol != null && col != null) Physics.IgnoreCollision(bulletCol, col);
+                }
             }
         }
 
-        
+        // ระบบ Raycast ไว้จัดการ Zombie
         RaycastHit hit;
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range))
         {
@@ -112,16 +116,21 @@ public class Gun : MonoBehaviour
         isReloading = true;
         Debug.Log("Reloading...");
 
-        // ตรงนี้สามารถใส่เสียงรีโหลดเพิ่มได้
+        // 🔊 เล่นเสียงรีโหลด (ถ้าใส่ไฟล์เสียงไว้)
+        if (gunSound != null && reloadSound != null)
+        {
+            gunSound.PlayOneShot(reloadSound);
+        }
+
         yield return new WaitForSeconds(reloadTime);
 
         currentAmmo = maxAmmo;
-        UpdateAmmoUI(); // 👈 อัปเดต UI หลังรีโหลดเสร็จ
+        UpdateAmmoUI(); // เติมกระสุนเต็ม 60
         isReloading = false;
         Debug.Log("Reloaded!");
     }
 
-    // ฟังก์ชันสำหรับอัปเดตข้อความบนหน้าจอ
+    // ฟังก์ชันอัปเดต UI
     void UpdateAmmoUI()
     {
         if (ammoText != null)

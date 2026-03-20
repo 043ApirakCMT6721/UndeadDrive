@@ -12,10 +12,10 @@ public class GameUIManager : MonoBehaviour
     public TextMeshProUGUI finalDistanceText;
     [Header("Sounds")]
     public AudioSource gameOverSound;
-    [Header("Explosion")] //  เพิ่มตรงนี้
+    [Header("Explosion")]
     public PlayerExplosion playerExplosion;
     bool isPaused = false;
-    bool isGameOver = false; //  กันเรียกซ้ำ
+    bool isGameOver = false;
     void Start()
     {
         Time.timeScale = 0f;
@@ -31,23 +31,17 @@ public class GameUIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (Time.timeScale == 1f)
-            {
                 PauseGame();
-            }
             else if (isPaused)
-            {
                 ContinueGame();
-            }
         }
     }
-    // ▶️ Start Game
     public void StartGame()
     {
         if (startPanel != null)
             startPanel.SetActive(false);
         Time.timeScale = 1f;
     }
-    // ⏸ Pause
     public void PauseGame()
     {
         if (pausePanel != null)
@@ -55,7 +49,6 @@ public class GameUIManager : MonoBehaviour
         Time.timeScale = 0f;
         isPaused = true;
     }
-    // ▶️ Continue
     public void ContinueGame()
     {
         if (pausePanel != null)
@@ -66,26 +59,23 @@ public class GameUIManager : MonoBehaviour
     // 💀 Game Over
     public void GameOver()
     {
-        if (isGameOver) return; // 🔥 กันซ้ำ
+        if (isGameOver) return;
         isGameOver = true;
         StartCoroutine(GameOverDelay());
     }
     // ⏳ ดีเลย์ + 💥 ระเบิด
     IEnumerator GameOverDelay()
     {
-        // 💥 ระเบิดทันทีตอนตาย
+        // 💥 เรียกระเบิด (รวมเสียงอยู่ในนี้)
         if (playerExplosion != null)
             playerExplosion.Explode();
-        // ⏳ หน่วงแบบไม่โดน TimeScale
         yield return new WaitForSecondsRealtime(1.7f);
-        // 💀 ค่อยขึ้น Game Over
         if (gameOverPanel != null)
             gameOverPanel.SetActive(true);
         if (gameOverSound != null)
             gameOverSound.Play();
         Time.timeScale = 0f;
     }
-    // แสดงระยะทาง
     public void ShowDistance(float distance)
     {
         if (finalDistanceText != null)
@@ -93,13 +83,11 @@ public class GameUIManager : MonoBehaviour
             finalDistanceText.text = "Distance: " + Mathf.FloorToInt(distance) + " m";
         }
     }
-    // 🔁 Restart
     public void RestartGame()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-    // ❌ Quit
     public void QuitGame()
     {
         Application.Quit();
