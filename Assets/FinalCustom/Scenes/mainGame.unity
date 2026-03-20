@@ -679,6 +679,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1106370805925670, guid: 1eb679c79a1a58e47ab5e9cc3c285835, type: 3}
       insertIndex: -1
       addedObject: {fileID: 864504603}
+    - targetCorrespondingSourceObject: {fileID: 1106370805925670, guid: 1eb679c79a1a58e47ab5e9cc3c285835, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 864504606}
     - targetCorrespondingSourceObject: {fileID: 1348135434316080, guid: 1eb679c79a1a58e47ab5e9cc3c285835, type: 3}
       insertIndex: -1
       addedObject: {fileID: 538044894}
@@ -2497,6 +2500,7 @@ MonoBehaviour:
   currentAmmo: 100
   muzzleFlash: {fileID: 927630084}
   gunSound: {fileID: 538044898}
+  reloadSound: {fileID: 8300000, guid: 5ff3fae4ebf7f8f46af28d6aa87b2942, type: 3}
   ammoText: {fileID: 18221676}
   bulletPrefab: {fileID: 8585542772986347399, guid: f1c24dc36b65de24ab16093f518a7397, type: 3}
   firePoints:
@@ -3620,7 +3624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d97c19364911e24e8867719e3803a63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarHealth
-  maxHealth: 100
+  maxHealth: 50
   currentHealth: 100
   minSafeSpeed: 60
   damage: 5
@@ -3654,6 +3658,104 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerExplosion
   explosionEffect: {fileID: 5847105863213985979, guid: 05daa8ee0ea5a5f4a836b8b907356438, type: 3}
   carModel: {fileID: 0}
+  explosionSound: {fileID: 864504606}
+--- !u!82 &864504606
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 864504578}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 995c4ce3ea9d15a4b8da149bb1f2a662, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.3
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &866957580
 GameObject:
   m_ObjectHideFlags: 0
@@ -4841,6 +4943,7 @@ MonoBehaviour:
   currentAmmo: 100
   muzzleFlash: {fileID: 448584223}
   gunSound: {fileID: 1387734865}
+  reloadSound: {fileID: 8300000, guid: 5ff3fae4ebf7f8f46af28d6aa87b2942, type: 3}
   ammoText: {fileID: 18221676}
   bulletPrefab: {fileID: 8585542772986347399, guid: f1c24dc36b65de24ab16093f518a7397, type: 3}
   firePoints:

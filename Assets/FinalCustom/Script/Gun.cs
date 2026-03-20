@@ -1,19 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
-using TMPro; // 👈 เพิ่มตัวนี้เพื่อใช้ TextMeshPro
+using TMPro; // 👈 สำหรับ UI กระสุน
 
 public class Gun : MonoBehaviour
 {
     public Camera cam;
     public float range = 100f;
     public float fireRate = 25f;
-    public int maxAmmo = 60; // 👈 เปลี่ยนเป็น 60 ตามที่ต้องการ
+    public int maxAmmo = 60;
     public int currentAmmo;
     public ParticleSystem muzzleFlash;
     public AudioSource gunSound;
+    public AudioClip reloadSound;  // 👈 เพิ่มช่องนี้ไว้ใส่เสียง gunlong
 
     [Header("UI Settings")]
-    public TextMeshProUGUI ammoText; // 👈 ลาก Object AmmoText มาใส่ในช่องนี้ใน Inspector
+    public TextMeshProUGUI ammoText;
 
     [Header("Bullet Settings")]
     public GameObject bulletPrefab;
@@ -27,7 +28,7 @@ public class Gun : MonoBehaviour
     void Start()
     {
         currentAmmo = maxAmmo;
-        UpdateAmmoUI(); // 👈 อัปเดต UI ตอนเริ่มเกม
+        UpdateAmmoUI();
 
         if (gunSound != null)
         {
@@ -41,7 +42,6 @@ public class Gun : MonoBehaviour
         if (isReloading)
             return;
 
-        
         if (Input.GetKeyDown(KeyCode.R))
         {
             StartCoroutine(Reload());
@@ -58,12 +58,12 @@ public class Gun : MonoBehaviour
     void Shoot()
     {
         currentAmmo--;
-        UpdateAmmoUI(); // 👈 อัปเดต UI ทุกครั้งที่ยิง
+        UpdateAmmoUI();
 
         if (muzzleFlash != null)
             muzzleFlash.Play();
 
-        // ระบบเสียง
+        // ระบบเสียงเวลายิง (สร้าง Object เสียงชั่วคราว)
         if (gunSound != null && gunSound.clip != null)
         {
             float randomPitch = Random.Range(0.9f, 1.1f);
@@ -77,7 +77,7 @@ public class Gun : MonoBehaviour
             Destroy(tempAudio, gunSound.clip.length);
         }
 
-        // ระบบยิงกระสุน
+        // ระบบสร้างกระสุนโมเดล
         if (bulletPrefab != null && firePoints != null)
         {
             foreach (Transform point in firePoints)
@@ -90,7 +90,6 @@ public class Gun : MonoBehaviour
                     rb.linearVelocity = point.forward * bulletForce + (carRb != null ? carRb.linearVelocity : Vector3.zero);
                 }
 
-                // Ignore Collision
                 Collider bulletCol = bullet.GetComponent<Collider>();
                 Collider[] carCols = GetComponentsInParent<Collider>();
                 foreach (Collider col in carCols)
@@ -98,7 +97,6 @@ public class Gun : MonoBehaviour
             }
         }
 
-        
         RaycastHit hit;
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range))
         {
@@ -110,18 +108,22 @@ public class Gun : MonoBehaviour
     IEnumerator Reload()
     {
         isReloading = true;
-        Debug.Log("Reloading...");
+        Debug.Log("Reloading with gunlong sound...");
 
-        // ตรงนี้สามารถใส่เสียงรีโหลดเพิ่มได้
+        // ✅ ส่วนที่เพิ่มเข้ามา: สั่งเล่นเสียงรีโหลด
+        if (gunSound != null && reloadSound != null)
+        {
+            gunSound.PlayOneShot(reloadSound);
+        }
+
         yield return new WaitForSeconds(reloadTime);
 
         currentAmmo = maxAmmo;
-        UpdateAmmoUI(); // 👈 อัปเดต UI หลังรีโหลดเสร็จ
+        UpdateAmmoUI();
         isReloading = false;
         Debug.Log("Reloaded!");
     }
 
-    // ฟังก์ชันสำหรับอัปเดตข้อความบนหน้าจอ
     void UpdateAmmoUI()
     {
         if (ammoText != null)
