@@ -12,10 +12,10 @@ public class GameUIManager : MonoBehaviour
     public TextMeshProUGUI finalDistanceText;
     [Header("Sounds")]
     public AudioSource gameOverSound;
-    [Header("Explosion")] // 💥 เพิ่มตรงนี้
+    [Header("Explosion")] //  เพิ่มตรงนี้
     public PlayerExplosion playerExplosion;
     bool isPaused = false;
-    bool isGameOver = false; // 🔥 กันเรียกซ้ำ
+    bool isGameOver = false; //  กันเรียกซ้ำ
     void Start()
     {
         Time.timeScale = 0f;
