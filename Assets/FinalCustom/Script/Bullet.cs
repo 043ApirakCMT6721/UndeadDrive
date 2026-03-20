@@ -23,14 +23,4 @@ public class Bullet : MonoBehaviour
         }
         Destroy(gameObject);
     }
-
-    void Update()
-    {
-        if (rb == null)
-        {
-            return;
-        }
-        rb.linearVelocity = transform.forward * speed;
-
-    }
 }
