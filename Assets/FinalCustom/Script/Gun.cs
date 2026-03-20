@@ -4,7 +4,7 @@ public class Gun : MonoBehaviour
 {
     public Camera cam;
     public float range = 100f;
-    public float fireRate = 10f;
+    public float fireRate = 30f;
     public int maxAmmo = 30;
     public int currentAmmo;
     public ParticleSystem muzzleFlash;
@@ -33,7 +33,7 @@ public class Gun : MonoBehaviour
 
         if (Input.GetMouseButton(0) && Time.time >= nextTimeToFire)
         {
-            nextTimeToFire = Time.time + 1f / fireRate;
+            nextTimeToFire += 1f / fireRate;
             Shoot();
         }
     }
@@ -56,6 +56,24 @@ public class Gun : MonoBehaviour
             foreach (Transform point in firePoints)
             {
                 GameObject bullet = Instantiate(bulletPrefab, point.position, point.rotation);
+
+                Rigidbody rb = bullet.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    Rigidbody carRb = GetComponentInParent<Rigidbody>();
+                    if (carRb != null)
+                        rb.linearVelocity = point.forward * bulletForce + carRb.linearVelocity;
+                    else
+                        rb.linearVelocity = point.forward * bulletForce;
+                }
+                Collider bulletCol = bullet.GetComponent<Collider>();
+                Collider[] carCols = GetComponentsInParent<Collider>();
+
+                foreach (Collider col in carCols)
+                {
+                    if (bulletCol != null && col != null)
+                        Physics.IgnoreCollision(bulletCol, col);
+                }
             }
 
         RaycastHit hit;
@@ -74,5 +92,4 @@ public class Gun : MonoBehaviour
             }
         }
     }
-
 }

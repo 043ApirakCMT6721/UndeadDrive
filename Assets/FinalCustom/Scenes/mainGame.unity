@@ -728,6 +728,7 @@ MonoBehaviour:
   startPanel: {fileID: 1259635121}
   gameOverPanel: {fileID: 511837238}
   pausePanel: {fileID: 1137592559}
+  finalDistanceText: {fileID: 0}
   gameOverSound: {fileID: 191155737}
 --- !u!4 &191155736
 Transform:
@@ -2236,9 +2237,6 @@ MonoBehaviour:
   car: {fileID: 864504584}
   distanceText: {fileID: 163535709}
   highScoreText: {fileID: 0}
-  startPosition: {x: 0, y: 0, z: 0}
-  distance: 0
-  highScore: 0
 --- !u!4 &518903376
 Transform:
   m_ObjectHideFlags: 0
@@ -2349,8 +2347,8 @@ MonoBehaviour:
   cam: {fileID: 330585545}
   range: 100
   fireRate: 10
-  maxAmmo: 500
-  currentAmmo: 500
+  maxAmmo: 2000
+  currentAmmo: 2000
   muzzleFlash: {fileID: 927630084}
   gunSound: {fileID: 538044898}
   bulletPrefab: {fileID: 8585542772986347399, guid: f1c24dc36b65de24ab16093f518a7397, type: 3}
@@ -4685,8 +4683,8 @@ MonoBehaviour:
   cam: {fileID: 330585545}
   range: 100
   fireRate: 10
-  maxAmmo: 500
-  currentAmmo: 500
+  maxAmmo: 2000
+  currentAmmo: 2000
   muzzleFlash: {fileID: 448584223}
   gunSound: {fileID: 1387734865}
   bulletPrefab: {fileID: 8585542772986347399, guid: f1c24dc36b65de24ab16093f518a7397, type: 3}
