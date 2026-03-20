@@ -1,39 +1,45 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class Gun : MonoBehaviour
 {
     public Camera cam;
     public float range = 100f;
-    public float fireRate = 30f;
+    public float fireRate = 25f;
     public int maxAmmo = 30;
     public int currentAmmo;
     public ParticleSystem muzzleFlash;
-    public AudioSource gunSound;   // เสียงปืน
+    public AudioSource gunSound;
 
-// เพิ่มสำหรับยิงกระสุนโมเดล
     public GameObject bulletPrefab;
     public Transform[] firePoints;
-    public float bulletForce = 2000f;
+    public float bulletForce = 800f;
+
+    public float reloadTime = 1.5f;
+    bool isReloading = false;
 
     float nextTimeToFire = 0f;
 
-    void Start()
-    {
-        currentAmmo = maxAmmo;
-
-        // กันไม่ให้เสียงเล่นตอนเริ่มเกม
-        if (gunSound != null)
-            gunSound.Stop();
-    }
-
     void Update()
     {
-        if (currentAmmo <= 0)
+        if (isReloading)
             return;
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            StartCoroutine(Reload());
+            return;
+        }
+
+        if (currentAmmo <= 0)
+        {
+            StartCoroutine(Reload());
+            return;
+        }
 
         if (Input.GetMouseButton(0) && Time.time >= nextTimeToFire)
         {
-            nextTimeToFire += 1f / fireRate;
+            nextTimeToFire = Time.time + 1f / fireRate;
             Shoot();
         }
     }
@@ -43,15 +49,12 @@ public class Gun : MonoBehaviour
         Debug.Log("Shoot!");
         currentAmmo--;
 
-        // เอฟเฟคปากกระบอกปืน
         if (muzzleFlash != null)
             muzzleFlash.Play();
 
-        // เล่นเสียงเฉพาะตอนยิง
         if (gunSound != null)
             gunSound.PlayOneShot(gunSound.clip);
 
-        // เพิ่ม: ยิงโมเดลกระสุนออกจากปืน
         if (bulletPrefab != null && firePoints != null)
             foreach (Transform point in firePoints)
             {
@@ -66,6 +69,7 @@ public class Gun : MonoBehaviour
                     else
                         rb.linearVelocity = point.forward * bulletForce;
                 }
+
                 Collider bulletCol = bullet.GetComponent<Collider>();
                 Collider[] carCols = GetComponentsInParent<Collider>();
 
@@ -91,5 +95,18 @@ public class Gun : MonoBehaviour
                 zombie.Die();
             }
         }
+    }
+
+    IEnumerator Reload()
+    {
+        isReloading = true;
+        Debug.Log("Reloading...");
+
+        yield return new WaitForSeconds(reloadTime);
+
+        currentAmmo = maxAmmo;
+        isReloading = false;
+
+        Debug.Log("Reloaded!");
     }
 }

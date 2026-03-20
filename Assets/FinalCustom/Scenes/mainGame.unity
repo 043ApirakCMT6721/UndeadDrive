@@ -2355,6 +2355,7 @@ MonoBehaviour:
   firePoints:
   - {fileID: 1149440934}
   bulletForce: 1000
+  reloadTime: 1.5
 --- !u!82 &538044898
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4310,7 +4311,7 @@ Transform:
   m_GameObject: {fileID: 1149440933}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.02, y: 0.08, z: 1.426}
+  m_LocalPosition: {x: -0.02, y: 0.08, z: 1.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4691,6 +4692,7 @@ MonoBehaviour:
   firePoints:
   - {fileID: 1521358222}
   bulletForce: 1000
+  reloadTime: 1.5
 --- !u!82 &1387734865
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5145,7 +5147,7 @@ Transform:
   m_GameObject: {fileID: 1521358221}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.022, y: 0.065, z: 1.42}
+  m_LocalPosition: {x: -0.022, y: 0.065, z: 1.711}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
