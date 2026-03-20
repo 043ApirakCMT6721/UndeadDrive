@@ -1,19 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
+using TMPro; // 👈 เพิ่มตัวนี้เพื่อใช้ TextMeshPro
 
 public class Gun : MonoBehaviour
 {
     public Camera cam;
     public float range = 100f;
     public float fireRate = 25f;
-    public int maxAmmo = 30;
+    public int maxAmmo = 60; // 👈 เปลี่ยนเป็น 60 ตามที่ต้องการ
     public int currentAmmo;
     public ParticleSystem muzzleFlash;
-    public AudioSource gunSound;   // 🔊 เสียงปืน
+    public AudioSource gunSound;
 
+    [Header("UI Settings")]
+    public TextMeshProUGUI ammoText; // 👈 ลาก Object AmmoText มาใส่ในช่องนี้ใน Inspector
+
+    [Header("Bullet Settings")]
     public GameObject bulletPrefab;
     public Transform[] firePoints;
-    public float bulletForce = 2000f; // ใช้ค่าแรงกระสุนจากเพื่อน
+    public float bulletForce = 2000f;
 
     public float reloadTime = 1.5f;
     bool isReloading = false;
@@ -22,7 +27,8 @@ public class Gun : MonoBehaviour
     void Start()
     {
         currentAmmo = maxAmmo;
-        // 🔇 กันเสียงเล่นตอนเริ่มเกม (เอามาจาก main)
+        UpdateAmmoUI(); // 👈 อัปเดต UI ตอนเริ่มเกม
+
         if (gunSound != null)
         {
             gunSound.Stop();
@@ -35,14 +41,14 @@ public class Gun : MonoBehaviour
         if (isReloading)
             return;
 
-        // ระบบ Reload (เอามาจาก HEAD)
-        if (Input.GetKeyDown(KeyCode.R) || currentAmmo <= 0)
+        
+        if (Input.GetKeyDown(KeyCode.R))
         {
             StartCoroutine(Reload());
             return;
         }
 
-        if (Input.GetMouseButton(0) && Time.time >= nextTimeToFire)
+        if (Input.GetMouseButton(0) && Time.time >= nextTimeToFire && currentAmmo > 0)
         {
             nextTimeToFire = Time.time + 1f / fireRate;
             Shoot();
@@ -52,12 +58,12 @@ public class Gun : MonoBehaviour
     void Shoot()
     {
         currentAmmo--;
+        UpdateAmmoUI(); // 👈 อัปเดต UI ทุกครั้งที่ยิง
 
-        // 🔥 เอฟเฟคปากกระบอก
         if (muzzleFlash != null)
             muzzleFlash.Play();
 
-        // 🔊 ระบบเสียงปืนแบบเทพของเพื่อน (สร้าง Object ชั่วคราวเพื่อให้เสียงไม่ขาด)
+        // ระบบเสียง
         if (gunSound != null && gunSound.clip != null)
         {
             float randomPitch = Random.Range(0.9f, 1.1f);
@@ -71,45 +77,33 @@ public class Gun : MonoBehaviour
             Destroy(tempAudio, gunSound.clip.length);
         }
 
-        // 💥 ยิงกระสุนโมเดล
+        // ระบบยิงกระสุน
         if (bulletPrefab != null && firePoints != null)
         {
             foreach (Transform point in firePoints)
             {
                 GameObject bullet = Instantiate(bulletPrefab, point.position, point.rotation);
                 Rigidbody rb = bullet.GetComponent<Rigidbody>();
-                
                 if (rb != null)
                 {
-                    // ระบบคำนวณความเร็วรถ (เอามาจาก HEAD)
                     Rigidbody carRb = GetComponentInParent<Rigidbody>();
-                    if (carRb != null)
-                        rb.linearVelocity = point.forward * bulletForce + carRb.linearVelocity;
-                    else
-                        rb.linearVelocity = point.forward * bulletForce;
+                    rb.linearVelocity = point.forward * bulletForce + (carRb != null ? carRb.linearVelocity : Vector3.zero);
                 }
 
-                // ป้องกันกระสุนชนรถตัวเอง (เอามาจาก HEAD)
+                // Ignore Collision
                 Collider bulletCol = bullet.GetComponent<Collider>();
                 Collider[] carCols = GetComponentsInParent<Collider>();
                 foreach (Collider col in carCols)
-                {
-                    if (bulletCol != null && col != null)
-                        Physics.IgnoreCollision(bulletCol, col);
-                }
+                    if (bulletCol != null && col != null) Physics.IgnoreCollision(bulletCol, col);
             }
         }
 
-        // 🎯 ยิงแบบ Raycast (เอาไว้จัดการ Zombie)
+        
         RaycastHit hit;
-        Debug.DrawRay(cam.transform.position, cam.transform.forward * range, Color.red, 2f);
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range))
         {
             ZombieLookPlayer zombie = hit.transform.GetComponentInParent<ZombieLookPlayer>();
-            if (zombie != null)
-            {
-                zombie.Die();
-            }
+            if (zombie != null) zombie.Die();
         }
     }
 
@@ -117,9 +111,22 @@ public class Gun : MonoBehaviour
     {
         isReloading = true;
         Debug.Log("Reloading...");
+
+        // ตรงนี้สามารถใส่เสียงรีโหลดเพิ่มได้
         yield return new WaitForSeconds(reloadTime);
+
         currentAmmo = maxAmmo;
+        UpdateAmmoUI(); // 👈 อัปเดต UI หลังรีโหลดเสร็จ
         isReloading = false;
         Debug.Log("Reloaded!");
+    }
+
+    // ฟังก์ชันสำหรับอัปเดตข้อความบนหน้าจอ
+    void UpdateAmmoUI()
+    {
+        if (ammoText != null)
+        {
+            ammoText.text = currentAmmo + " / " + maxAmmo;
+        }
     }
 }
